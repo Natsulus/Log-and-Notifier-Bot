@@ -20,7 +20,7 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 - weapons: List of Weapon Types you want to be notified for from the shop. [Array of String]
 - armourParts: List of Armour Parts you want to be notified for from the shop. [Array of String]
 - armour: List of Armour Types you want to be notified for from the shop. [Array of String]
-- shopLevel: Select which level of shop to check. Use `below`, `above`, or `all`. [String]
+- shopLevel: Select which shop to check (Lvl <100, Lvl 100, or both). Use `below`, `above`, or `all`. [String]
 
 ## Notes
 
