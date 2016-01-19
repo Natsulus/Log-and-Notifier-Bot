@@ -80,24 +80,41 @@ bot.on("message", m => {
             }
         }
     } else if (m.channel.id === '135579492616765440') {
-        let items = m.content.split("\n");
+        let items = m.content;
         let shop = m.content.split('```').join('').split('\n');
 
         shop.pop();
+        for (let i = 0; i < shop.length; i++) {
+            if (shop[i].indexOf("!hgamble") !== -1) {
+                shop.splice(i, 1);
+                break;
+            }
+        }
         shop = shop.join('\n');
-        items.pop();
+
         if (config.consoleLog) sConsole.shop(shop);
         if (config.shopLevel.toLowerCase() === "above") {
-            items = items.join('\n');
-            items = items.split("\n\n")[0];
+            items = items.split("\n=")[0];
             items = items.split("\n");
             items.shift();
+            items.pop();
         } else if (config.shopLevel.toLowerCase() === "below") {
-            items = items.join('\n');
-            items = items.split("\n\n")[1];
+            items = items.split("\n=")[1];
             items = items.split("\n");
             items.shift();
+            items.pop();
+        } else {
+            items = items.split("\n");
+            items.pop();
+
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].indexOf("!hgamble") !== -1) {
+                    items.splice(i, 1);
+                    break;
+                }
+            }
         }
+        global.console.log(items);
 
         let message = ``;
 
@@ -122,7 +139,7 @@ bot.on("message", m => {
         }
         if (message !== '') {
             message.trim();
-            if (config.pmLog) bot.sendMessage(user, message);
+            if (config.pmItems) bot.sendMessage(user, message);
             if (config.consoleLog)sConsole.wanted(message.split("```").join(""));
         }
     }
