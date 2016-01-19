@@ -24,8 +24,9 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 
 ## Notes
 
-- You can use the same email and password for the account that matches the discordId, however notifications will not work if you do so.
+- **You can use the same email and password for the account that matches the discordId, however notifications will not work if you do so.**
 - The website will be available at `localhost:5000/logs`, unless you change the port of course.
+- **There are 3 log files (Activity, Shop, Wanted). At the top left of the website, there's a menu button which lets you select which log files to show. You'll likely be looking to have Activity selected. The website selects the first log file created by default so it will either show the Shop or Activity log file.**
 - You will need to restart the bot when updating configurations.
 - To use console only, just remove any `express` related code.
 - Colouring in console can be changed, just change the related code to so. See [here](https://github.com/bluejamesbond/Scribe.js/wiki/4-%C2%B7-API-%3A-Console2) for more info on how to change console colours.
