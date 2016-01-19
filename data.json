@@ -1,0 +1,9 @@
+{
+    "Cloth": ["Linen", "Silk", "Wool"],
+    "Leather": ["Leather"],
+    "Chain": ["Chain"],
+    "Splint": ["Splint"],
+    "Scale": ["Scale"],
+    "Half-Plate": ["Half-Plate"],
+    "Full Plate": ["Full Plate"]
+}

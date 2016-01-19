@@ -1,0 +1,10 @@
+{
+    "name": "NAME",
+    "discordId": "12345678901234567",
+    "botEmail": "email@domain.com",
+    "botPassword": "password",
+    "ranks": ["Ω", "SSS", "SS", "S", "A", "B"],
+    "weapons": ["Dagger", "Sword"],
+    "armourParts": ["Head", "Shoulders", "Arms", "Hands", "Chest", "Legs", "Feet"],
+    "armour": ["Cloth", "Leather"]
+}
