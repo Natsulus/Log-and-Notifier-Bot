@@ -25,3 +25,4 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 
 - You can use the same email and password for the account that matches the discordId, however notifications will not work if you do so.
 - The website will be available at `localhost:5000`, unless you change the port of course.
+- You will need to restart the bot when updating configurations.
