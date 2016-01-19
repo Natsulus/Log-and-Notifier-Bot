@@ -114,7 +114,6 @@ bot.on("message", m => {
                 }
             }
         }
-        global.console.log(items);
 
         let message = ``;
 
