@@ -21,6 +21,9 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 - armourParts: List of Armour Parts you want to be notified for from the shop. [Array of String]
 - armour: List of Armour Types you want to be notified for from the shop. [Array of String]
 - shopLevel: Select which shop to check (Lvl <100, Lvl 100, or both). Use `below`, `above`, or `all`. [String]
+- pmLog: If true, the bot will PM you your activities (Chest, Quest, etc). [Boolean]
+- pmItems: If true, the bot will PM items in the shop that match the configured criteria. [Boolean]
+- consoleLog: If true, the bot will log activities, shop, and wanted items on console and website. [Boolean]
 
 ## Notes
 

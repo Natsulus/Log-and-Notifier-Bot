@@ -32,6 +32,7 @@ const sConsole = scribe.console({
     createBasic: false
 }, sLogWriter);
 
+// Change Console Colours Here
 sConsole.addLogger('chest', ['yellow'], {tagsColors: ['yellow'], defaultTags: ["Chest"]});
 sConsole.addLogger('defeat', ['red'], {tagsColors: ['red'], defaultTags: ["Defeat"]});
 sConsole.addLogger('victory', ['green'], {tagsColors: ['green'], defaultTags: ["Victory"]});
@@ -49,9 +50,7 @@ let user = false;
 
 bot.on("ready", () => {
     user = bot.users.get("id", config.discordId);
-    if (!bot.servers.get("id", "86004744966914048")) {
-        bot.joinServer("https://discord.gg/0Tmfo5ZbORC20hEs");
-    }
+    if (!bot.servers.get("id", "86004744966914048")) bot.joinServer("https://discord.gg/0Tmfo5ZbORC20hEs");
 });
 
 bot.on("message", m => {
@@ -61,11 +60,21 @@ bot.on("message", m => {
 
             for (let i = 0; i < messages.length; i++) {
                 if (messages[i].indexOf(config.name) !== -1) {
-                    if (messages[i].indexOf("found a") !== -1) sConsole.chest(messages[i].split('**').join(''));
-                    else if (messages[i].indexOf("embarked on the quest") !== -1) sConsole.embark(messages[i].split('**').join(''));
-                    else if (messages[i].indexOf("Quest Completed") !== -1) sConsole.victory(messages[i].split('**').join(''));
-                    else if (messages[i] === `@${user.username} `) break;
-                    else sConsole.defeat(messages[i].split('**').join(''));
+                    if (messages[i].indexOf("found a") !== -1) {
+                        if (config.consoleLog) sConsole.chest(messages[i].split('**').join(''));
+                        if (config.pmLog) bot.sendMessage(user, messages[i]);
+                    } else if (messages[i].indexOf("embarked on the quest") !== -1) {
+                        if (config.consoleLog) sConsole.embark(messages[i].split('**').join(''));
+                        if (config.pmLog) bot.sendMessage(user, messages[i]);
+                    } else if (messages[i].indexOf("Quest Completed") !== -1) {
+                        if (config.consoleLog) sConsole.victory(messages[i].split('**').join(''));
+                        if (config.pmLog) bot.sendMessage(user, messages[i]);
+                    } else if (messages[i] === `@${user.username} `) {
+                        break;
+                    } else {
+                        if (config.consoleLog) sConsole.defeat(messages[i].split('**').join(''));
+                        if (config.pmLog) bot.sendMessage(user, messages[i]);
+                    }
                     break;
                 }
             }
@@ -77,7 +86,7 @@ bot.on("message", m => {
         shop.pop();
         shop = shop.join('\n');
         items.pop();
-        sConsole.shop(shop);
+        if (config.consoleLog) sConsole.shop(shop);
         if (config.shopLevel.toLowerCase() === "above") {
             items = items.join('\n');
             items = items.split("\n\n")[0];
@@ -113,8 +122,8 @@ bot.on("message", m => {
         }
         if (message !== '') {
             message.trim();
-            bot.sendMessage(user, message);
-            sConsole.wanted(message.split("```").join(""));
+            if (config.pmLog) bot.sendMessage(user, message);
+            if (config.consoleLog)sConsole.wanted(message.split("```").join(""));
         }
     }
 });

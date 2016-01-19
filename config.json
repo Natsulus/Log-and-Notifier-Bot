@@ -7,5 +7,8 @@
     "weapons": ["Dagger", "Sword"],
     "armourParts": ["Head", "Shoulders", "Arms", "Hands", "Chest", "Legs", "Feet"],
     "armour": ["Cloth", "Leather"],
-    "shopLevel": "all"
+    "shopLevel": "all",
+    "pmLog": false,
+    "pmItems": true,
+    "consoleLog": true
 }
