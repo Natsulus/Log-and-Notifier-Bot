@@ -6,5 +6,6 @@
     "ranks": ["Ω", "SSS", "SS", "S", "A", "B"],
     "weapons": ["Dagger", "Sword"],
     "armourParts": ["Head", "Shoulders", "Arms", "Hands", "Chest", "Legs", "Feet"],
-    "armour": ["Cloth", "Leather"]
+    "armour": ["Cloth", "Leather"],
+    "shopLevel": "all"
 }

@@ -20,6 +20,7 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 - weapons: List of Weapon Types you want to be notified for from the shop. [Array of String]
 - armourParts: List of Armour Parts you want to be notified for from the shop. [Array of String]
 - armour: List of Armour Types you want to be notified for from the shop. [Array of String]
+- shopLevel: Select which level of shop to check. Use `below`, `above`, or `all`. [String]
 
 ## Notes
 
@@ -28,3 +29,4 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 - You will need to restart the bot when updating configurations.
 - To use console only, just remove any `express` related code.
 - Colouring in console can be changed, just change the related code to so. See [here](https://github.com/bluejamesbond/Scribe.js/wiki/4-%C2%B7-API-%3A-Console2) for more info on how to change console colours.
+- Bot will auto-join the BDA server if not connected.

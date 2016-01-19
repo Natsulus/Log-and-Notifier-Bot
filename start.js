@@ -49,6 +49,9 @@ let user = false;
 
 bot.on("ready", () => {
     user = bot.users.get("id", config.discordId);
+    if (!bot.servers.get("id", "86004744966914048")) {
+        bot.joinServer("https://discord.gg/0Tmfo5ZbORC20hEs");
+    }
 });
 
 bot.on("message", m => {
@@ -68,13 +71,24 @@ bot.on("message", m => {
             }
         }
     } else if (m.channel.id === '135579492616765440') {
-        const items = m.content.split("\n");
-        const shop = m.content.split('```').join('').split('\n');
+        let items = m.content.split("\n");
+        let shop = m.content.split('```').join('').split('\n');
 
         shop.pop();
-        shop.join('\n');
+        shop = shop.join('\n');
         items.pop();
         sConsole.shop(shop);
+        if (config.shopLevel.toLowerCase() === "above") {
+            items = items.join('\n');
+            items = items.split("\n\n")[0];
+            items = items.split("\n");
+            items.shift();
+        } else if (config.shopLevel.toLowerCase() === "below") {
+            items = items.join('\n');
+            items = items.split("\n\n")[1];
+            items = items.split("\n");
+            items.shift();
+        }
 
         let message = ``;
 
