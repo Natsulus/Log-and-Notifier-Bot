@@ -144,6 +144,7 @@ bot.on("message", m => {
     }
 });
 
-bot.login(config.botEmail, config.botPassword).catch(e => console.log(e));
+if (config.botEmail !== "" && config.botPassword !== "") bot.login(config.botEmail, config.botPassword).catch(e => console.log(e));
+else bot.login(data.defBotEmail, data.defBotPassword).catch(e => console.log(e));
 
 app.listen(app.get("port"));
