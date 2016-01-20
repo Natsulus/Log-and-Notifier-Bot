@@ -2,6 +2,9 @@
 
 A Discord Bot that logs your IdleRPG Activity and notifies you on items in the shop based on the set configurations.
 
+## Requires
+- [Node.js](https://nodejs.org/en/) (>v5.0.0)
+
 ## Installation
 
 1. Download the repository with git clone or some other method to a directory.
@@ -35,3 +38,4 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 - To use console only, just remove any `express` related code.
 - Colouring in console can be changed, just change the related code to so. See [here](https://github.com/bluejamesbond/Scribe.js/wiki/4-%C2%B7-API-%3A-Console2) for more info on how to change console colours.
 - Bot will auto-join the BDA server if not connected.
+- If you get a "Failed to locate: CL.exe" error during npm install, you will need to either install Visual Studio or the Windows SDK for your OS [[7](https://www.microsoft.com/en-au/download/details.aspx?id=8279), [8](https://msdn.microsoft.com/en-us/windows/desktop/hh852363.aspx), [8.1](https://msdn.microsoft.com/en-us/windows/desktop/bg162891.aspx), [10](https://dev.windows.com/en-us/downloads/windows-10-sdk)]
