@@ -7,6 +7,7 @@
     "weapons": ["Dagger", "Sword"],
     "armourParts": ["Head", "Shoulders", "Arms", "Hands", "Chest", "Legs", "Feet"],
     "armour": ["Cloth", "Leather"],
+    "potions": ["Vitality"],
     "shopLevel": "all",
     "pmLog": false,
     "pmItems": true,

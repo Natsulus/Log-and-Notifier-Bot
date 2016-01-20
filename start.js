@@ -113,7 +113,6 @@ bot.on("message", m => {
         }
         shop = shop.join("\n");
         shop = shop.split("```").join("").split("\n");
-        const items = [];
         let message = [];
 
         for (let i = 0; i < shop.length; i++) {
@@ -122,6 +121,7 @@ bot.on("message", m => {
             const ranks = ["+Ω", "+SSS", "+SS", "+S", "+A", "+B", "+C", "+D", "+E", "+F", "Ω", "SSS", "SS", "S", "A", "B", "C", "D", "E", "F"];
             const armourParts = ["Head", "Shoulders", "Arms", "Hands", "Chest", "Legs", "Feet"];
             const weapons = ["Axe", "Bow", "Crossbow", "Dagger", "Mace", "Polearm", "Spear", "Staff", "Sword", "Wand"];
+            const potions = ["Health", "Strength", "Vitality", "Endurance", "Dexterity", "Luck", "Charisma"];
 
             let index = ranks.indexOf(itemData[2]);
 
@@ -134,6 +134,18 @@ bot.on("message", m => {
             index = armourParts.indexOf(itemData[0]);
 
             if (index > -1) tags.push(armourParts[index]);
+
+            if (itemData[0] === "Consumable") {
+                tags.push("Consumable");
+
+                for (const pot of potions) {
+                    index = itemData[1].indexOf(pot);
+                    if (index > -1) {
+                        tags.push(potions[index]);
+                        break;
+                    }
+                }
+            }
 
             armourLoop:
             for (const armourType in data) {
@@ -149,6 +161,7 @@ bot.on("message", m => {
             if (config.consoleLog) sConsole.tag(...tags).shop(shop[i]);
             let armour = false,
                 armourPart = false,
+                potion = false,
                 rank = false,
                 weapon = false;
 
@@ -166,7 +179,14 @@ bot.on("message", m => {
                 }
             }
 
-            if (!weapon) {
+            for (const conPotion of config.potions) {
+                if (tags.indexOf(conPotion) > -1) {
+                    potion = true;
+                    break;
+                }
+            }
+
+            if (!weapon && !potion) {
                 for (const conArmPart of config.armourParts) {
                     if (tags.indexOf(conArmPart) > -1) {
                         armourPart = true;
@@ -182,7 +202,7 @@ bot.on("message", m => {
                 }
             }
 
-            if (rank && (weapon || armourPart && armour)) {
+            if (potion || rank && (weapon || armourPart && armour)) {
                 if (config.consoleLog) sConsole.tag(...tags).wanted(shop[i]);
                 message.push(shop[i]);
             }
