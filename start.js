@@ -141,7 +141,7 @@ bot.on("message", m => {
                 for (const pot of potions) {
                     index = itemData[1].indexOf(pot);
                     if (index > -1) {
-                        tags.push(potions[index]);
+                        tags.push(pot);
                         break;
                     }
                 }
