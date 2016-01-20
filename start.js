@@ -66,9 +66,9 @@ bot.on("message", m => {
                     } else if (messages[i].indexOf("embarked on the quest") !== -1) {
                         if (config.consoleLog) sConsole.embark(messages[i].split('**').join(''));
                         if (config.pmLog) bot.sendMessage(user, messages[i]);
-                    } else if (messages[i].indexOf("Quest Completed") !== -1) {
+                    } else if (messages[i].indexOf("Gold!]") !== -1) {
                         if (config.consoleLog) sConsole.victory(messages[i].split('**').join(''));
-                        if (config.pmLog) bot.sendMessage(user, messages[i]);
+                        bot.sendMessage(user, messages[i]);
                     } else if (messages[i] === `@${user.username} `) {
                         break;
                     } else {
@@ -121,7 +121,9 @@ bot.on("message", m => {
             const ranks = ["+Ω", "+SSS", "+SS", "+S", "+A", "+B", "+C", "+D", "+E", "+F", "Ω", "SSS", "SS", "S", "A", "B", "C", "D", "E", "F"];
             const armourParts = ["Head", "Shoulders", "Arms", "Hands", "Chest", "Legs", "Feet"];
             const weapons = ["Axe", "Bow", "Crossbow", "Dagger", "Mace", "Polearm", "Spear", "Staff", "Sword", "Wand"];
-            const potions = ["Health", "Strength", "Vitality", "Endurance", "Dexterity", "Luck", "Charisma"];
+            const offhands = ["Book", "Great Tower Shield", "Orb", "Quiver", "Shield", "Symbol", "Tower Shield", "Small Shield"];
+            const potions = ["Health", "Strength", "Vitality", "Endurance", "Dexterity", "Luck", "Charisma", "Transmutation", "Intelligence"];
+            const scrolls = ["Identify"];
 
             let index = ranks.indexOf(itemData[2]);
 
@@ -129,11 +131,24 @@ bot.on("message", m => {
 
             index = weapons.indexOf(itemData[0]);
 
-            if (index > -1) tags.push(weapons[index]);
+            if (index > -1) {
+                tags.push("Weapon");
+                tags.push(weapons[index]);
+            }
+
+            index = offhands.indexOf(itemData[0]);
+
+            if (index > -1) {
+                tags.push("Offhand");
+                tags.push(offhands[index]);
+            }
 
             index = armourParts.indexOf(itemData[0]);
 
-            if (index > -1) tags.push(armourParts[index]);
+            if (index > -1) {
+                tags.push("Armour");
+                tags.push(armourParts[index]);
+            }
 
             if (itemData[0] === "Consumable") {
                 tags.push("Consumable");
@@ -143,6 +158,16 @@ bot.on("message", m => {
                     if (index > -1) {
                         tags.push(pot);
                         break;
+                    }
+                }
+
+                if (itemData[1].indexOf("Sroll") > -1 || itemData[1].indexOf("Scroll") > -1) {
+                    for (const scroll of scrolls) {
+                        index = itemData[1].indexOf(scroll);
+                        if (index > -1) {
+                            tags.push(scroll);
+                            break;
+                        }
                     }
                 }
             }
@@ -161,8 +186,10 @@ bot.on("message", m => {
             if (config.consoleLog) sConsole.tag(...tags).shop(shop[i]);
             let armour = false,
                 armourPart = false,
+                offhand = false,
                 potion = false,
                 rank = false,
+                scroll = false,
                 weapon = false;
 
             for (const conRank of config.ranks) {
@@ -179,6 +206,13 @@ bot.on("message", m => {
                 }
             }
 
+            for (const conOffhand of config.weapons) {
+                if (tags.indexOf(conOffhand) > -1) {
+                    offhand = true;
+                    break;
+                }
+            }
+
             for (const conPotion of config.potions) {
                 if (tags.indexOf(conPotion) > -1) {
                     potion = true;
@@ -186,7 +220,14 @@ bot.on("message", m => {
                 }
             }
 
-            if (!weapon && !potion) {
+            for (const conScroll of config.scrolls) {
+                if (tags.indexOf(conScroll) > -1) {
+                    scroll = true;
+                    break;
+                }
+            }
+
+            if (!weapon && !potion && !scroll && !offhand) {
                 for (const conArmPart of config.armourParts) {
                     if (tags.indexOf(conArmPart) > -1) {
                         armourPart = true;
@@ -202,7 +243,7 @@ bot.on("message", m => {
                 }
             }
 
-            if (potion || rank && (weapon || armourPart && armour)) {
+            if (scroll || potion || rank && (weapon || offhand || armourPart && armour)) {
                 if (config.consoleLog) sConsole.tag(...tags).wanted(shop[i]);
                 message.push(shop[i]);
             }
