@@ -8,10 +8,10 @@ const express = require("express");
 
 const config = require("./config.json");
 const data = require("./data.json");
+const defBot = require("./defBot.json");
 
 const bot = new Discord.Client();
 const app = express();
-
 const sLogWriter = new scribe.LogWriter('IdleRPG');
 
 sLogWriter.getFile = opt => {
@@ -37,11 +37,11 @@ sConsole.addLogger('chest', ['yellow'], {tagsColors: ['yellow'], defaultTags: ["
 sConsole.addLogger('defeat', ['red'], {tagsColors: ['red'], defaultTags: ["Defeat"]});
 sConsole.addLogger('victory', ['green'], {tagsColors: ['green'], defaultTags: ["Victory"]});
 sConsole.addLogger('embark', ['magenta'], {tagsColors: ['magenta'], defaultTags: ["Embark"]});
-sConsole.addLogger('shop', ['bgBlue'], {tagsColors: ['bgBlue'], defaultTags: ["Shop"]});
+sConsole.addLogger('shop', ['bgBlue'], {tagsColors: ['bgBlue']});
 sConsole.addLogger('wanted', ['bgRed'], {tagsColors: ['bgRed'], defaultTags: ["Wanted"]});
 
 app.set('port', process.env.PORT || 5000);
-app.use('/logs', scribe.webPanel());
+app.use('/', scribe.webPanel());
 
 bot.on("warn", m => global.console.log("[warn]", m));
 bot.on("debug", m => global.console.log("[debug]", m));
@@ -80,71 +80,121 @@ bot.on("message", m => {
             }
         }
     } else if (m.channel.id === '135579492616765440') {
-        let items = m.content;
-        let shop = m.content.split('```').join('').split('\n');
+        let shop = m.content;
 
-        shop.pop();
-        for (let i = 0; i < shop.length; i++) {
-            if (shop[i].indexOf("!hgamble") !== -1) {
-                shop.splice(i, 1);
-                break;
-            }
-        }
-        shop = shop.join('\n');
-
-        if (config.consoleLog) sConsole.shop(shop);
         if (config.shopLevel.toLowerCase() === "above") {
-            items = items.split("\n=")[0];
-            items = items.split("\n");
-            items.shift();
-            items.pop();
+            shop = shop.split("\n=")[0];
+            shop = shop.split("\n");
+            shop.shift();
+            shop.pop();
         } else if (config.shopLevel.toLowerCase() === "below") {
-            items = items.split("\n=")[1];
-            items = items.split("\n");
-            items.shift();
-            items.pop();
+            shop = shop.split("\n=")[1];
+            shop = shop.split("\n");
+            shop.shift();
+            shop.pop();
         } else {
-            items = items.split("\n");
-            items.pop();
+            shop = shop.split("\n");
+            shop.pop();
 
-            for (let i = 0; i < items.length; i++) {
-                if (items[i].indexOf("!hgamble") !== -1) {
-                    items.splice(i, 1);
+            for (let i = 0; i < shop.length; i++) {
+                if (shop[i].indexOf("!hgamble") !== -1) {
+                    shop.splice(i, 1);
                     break;
                 }
             }
         }
+        if (config.consoleLog) sConsole.shop("==========Separator==========");
 
-        let message = ``;
-
-        for (let i = 0; i < items.length; i++) {
-            const itemData = items[i].split(" | ");
-
-            if (config.ranks.indexOf(itemData[2]) !== -1) {
-                if (config.weapons.indexOf(itemData[0]) !== -1) {
-                    message += `${items[i]}\n`;
-                } else if (config.armourParts.indexOf(itemData[0])) {
-                    armourLoop:
-                        for (const armour of config.armour) {
-                            for (const armourType of data[armour]) {
-                                if (itemData[1].indexOf(armourType) !== -1) {
-                                    message += `${items[i]}\n`;
-                                    break armourLoop;
-                                }
-                            }
-                        }
-                }
+        for (let i = 0; i < shop.length; i++) {
+            if (shop[i].includes("====")) {
+                shop.splice(i, 1);
+                i--;
             }
         }
-        if (message !== '') {
-            message.trim();
-            if (config.pmItems) bot.sendMessage(user, message);
-            if (config.consoleLog)sConsole.wanted(message.split("```").join(""));
+        shop = shop.join("\n");
+        shop = shop.split("```").join("").split("\n");
+        const items = [];
+        let message = [];
+
+        for (let i = 0; i < shop.length; i++) {
+            const itemData = shop[i].split(" | ");
+            const tags = [];
+            const ranks = ["+Ω", "+SSS", "+SS", "+S", "+A", "+B", "+C", "+D", "+E", "+F", "Ω", "SSS", "SS", "S", "A", "B", "C", "D", "E", "F"];
+            const armourParts = ["Head", "Shoulders", "Arms", "Hands", "Chest", "Legs", "Feet"];
+            const weapons = ["Axe", "Bow", "Crossbow", "Dagger", "Mace", "Polearm", "Spear", "Staff", "Sword", "Wand"];
+
+            let index = ranks.indexOf(itemData[2]);
+
+            if (index > -1) tags.push(ranks[index]);
+
+            index = weapons.indexOf(itemData[0]);
+
+            if (index > -1) tags.push(weapons[index]);
+
+            index = armourParts.indexOf(itemData[0]);
+
+            if (index > -1) tags.push(armourParts[index]);
+
+            armourLoop:
+            for (const armourType in data) {
+                if (data.hasOwnProperty(armourType)) {
+                    for (const armour of data[armourType]) {
+                        if (itemData[1].indexOf(armour) > -1) {
+                            tags.push(armourType);
+                            break armourLoop;
+                        }
+                    }
+                }
+            }
+            if (config.consoleLog) sConsole.tag(...tags).shop(shop[i]);
+            let armour = false,
+                armourPart = false,
+                rank = false,
+                weapon = false;
+
+            for (const conRank of config.ranks) {
+                if (tags.indexOf(conRank) > -1) {
+                    rank = true;
+                    break;
+                }
+            }
+
+            for (const conWeapon of config.weapons) {
+                if (tags.indexOf(conWeapon) > -1) {
+                    weapon = true;
+                    break;
+                }
+            }
+
+            if (!weapon) {
+                for (const conArmPart of config.armourParts) {
+                    if (tags.indexOf(conArmPart) > -1) {
+                        armourPart = true;
+                        break;
+                    }
+                }
+
+                for (const conArmour of config.armour) {
+                    if (tags.indexOf(conArmour) > -1) {
+                        armour = true;
+                        break;
+                    }
+                }
+            }
+
+            if (rank && (weapon || armourPart && armour)) {
+                if (config.consoleLog) sConsole.tag(...tags).wanted(shop[i]);
+                message.push(shop[i]);
+            }
         }
+
+        message = message.map(mes => `\`\`\`${mes}\`\`\``);
+
+        if (message.length !== 0 && config.pmItems) bot.sendMessage(user, message.join("\n"));
     }
 });
 
 if (config.botEmail !== "" && config.botPassword !== "") bot.login(config.botEmail, config.botPassword).catch(e => console.log(e));
-else bot.login(data.defBotEmail, data.defBotPassword).catch(e => console.log(e));
+else bot.login(defBot.defBotEmail, defBot.defBotPassword).catch(e => console.log(e));
 
 app.listen(app.get("port"));

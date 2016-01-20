@@ -14,8 +14,8 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 
 - name: The name of your RPG Character. [String]
 - discordId: Your Discord Account ID. [String]
-- botEmail: The email of the account the bot will use. [String]
-- botPassword: The password of the account the bot will use. [String]
+- botEmail: The email of the account the bot will use. [String] (Will use default bot if left blank.)
+- botPassword: The password of the account the bot will use. [String] (Will use default bot if left blank.)
 - ranks: List of the ranks you want to be notified for from the shop. [Array of String]
 - weapons: List of Weapon Types you want to be notified for from the shop. [Array of String]
 - armourParts: List of Armour Parts you want to be notified for from the shop. [Array of String]
@@ -27,8 +27,8 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 
 ## Notes
 
-- **You can use the same email and password for the account that matches the discordId, however notifications will not work if you do so.**
-- The website will be available at `localhost:5000/logs`, unless you change the port of course.
+- **You can use the same email and password for the account that matches the discordId, however PMs will not work if you do so.**
+- The website will be available at `localhost:5000`, unless you change the port of course.
 - **There are 3 log files (Activity, Shop, Wanted). At the top left of the website, there's a menu button which lets you select which log files to show. You'll likely be looking to have Activity selected. The website selects the first log file created by default so it will either show the Shop or Activity log file.**
 - You will need to restart the bot when updating configurations.
 - To use console only, just remove any `express` related code.
