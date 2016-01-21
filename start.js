@@ -162,7 +162,7 @@ bot.on("message", m => {
                         }
                 }
 
-                if (itemData[1].indexOf("Potion")) {
+                if (itemData[1].indexOf("Potion") > -1) {
                     for (const pot of potions) {
                         index = itemData[1].indexOf(pot);
                         if (index > -1) {
@@ -176,7 +176,7 @@ bot.on("message", m => {
                     if (itemData[0] === "Consumable") {
                         tags.push("Consumable");
 
-                        if (itemData[1].indexOf("Potion")) {
+                        if (itemData[1].indexOf("Potion") > -1) {
                             for (const pot of potions) {
                                 index = itemData[1].indexOf(pot);
                                 if (index > -1) {
