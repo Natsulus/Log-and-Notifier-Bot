@@ -1,0 +1,17 @@
+{
+    "unique": {
+        "Axe": ["Axe", "Adze", "Tomahawk", "Poleaxe", "Pickaxe"],
+        "Book": ["Book"],
+        "Dagger": ["Dagger", "Katar", "Stiletto", "Kris", "Dirk"],
+        "Orb": ["Orb"],
+        "Quiver": ["Quiver"],
+        "Sword": ["Sword", "Sabre", "Claymore", "Scimitar", "Longsword", "Shortsword", "Broadsword", "Rapier", "Falchion"],
+        "Symbol": ["Symbol"]
+    },
+    "shields": {
+        "Great Tower Shield": ["Great Tower Shield"],
+        "Shield": ["Shield"],
+        "Tower Shield": ["Tower Shield"],
+        "Small Shield": ["Small Shield"]
+    }
+}

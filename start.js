@@ -7,7 +7,8 @@ const Discord = require("discord.js");
 const express = require("express");
 
 const config = require("./config.json");
-const data = require("./data.json");
+const offhandData = require("./offhandData.json");
+const armourData = require("./armourData.json");
 const defBot = require("./defBot.json");
 
 const bot = new Discord.Client();
@@ -68,7 +69,7 @@ bot.on("message", m => {
                         if (config.pmLog) bot.sendMessage(user, messages[i]);
                     } else if (messages[i].indexOf("Gold!]") !== -1) {
                         if (config.consoleLog) sConsole.victory(messages[i].split('**').join(''));
-                        bot.sendMessage(user, messages[i]);
+                        if (config.pmLog) bot.sendMessage(user, messages[i]);
                     } else if (messages[i] === `@${user.username} `) {
                         break;
                     } else {
@@ -121,7 +122,6 @@ bot.on("message", m => {
             const ranks = ["+Ω", "+SSS", "+SS", "+S", "+A", "+B", "+C", "+D", "+E", "+F", "Ω", "SSS", "SS", "S", "A", "B", "C", "D", "E", "F"];
             const armourParts = ["Head", "Shoulders", "Arms", "Hands", "Chest", "Legs", "Feet"];
             const weapons = ["Axe", "Bow", "Crossbow", "Dagger", "Mace", "Polearm", "Spear", "Staff", "Sword", "Wand"];
-            const offhands = ["Book", "Great Tower Shield", "Orb", "Quiver", "Shield", "Symbol", "Tower Shield", "Small Shield"];
             const potions = ["Health", "Strength", "Vitality", "Endurance", "Dexterity", "Luck", "Charisma", "Transmutation", "Intelligence"];
             const scrolls = ["Identify"];
 
@@ -136,22 +136,31 @@ bot.on("message", m => {
                 tags.push(weapons[index]);
             }
 
-            index = offhands.indexOf(itemData[0]);
-
-            if (index > -1) {
-                tags.push("Offhand");
-                tags.push(offhands[index]);
-            }
-
-            index = armourParts.indexOf(itemData[0]);
-
-            if (index > -1) {
-                tags.push("Armour");
-                tags.push(armourParts[index]);
-            }
-
-            if (itemData[0] === "Consumable") {
-                tags.push("Consumable");
+            if (tags.indexOf("Weapon") === -1) {
+                if (itemData[0] === "Offhand") {
+                    tags.push("Offhand");
+                    if (itemData[1].indexOf("Shield") > -1) {
+                        if (itemData[1].indexOf("Small Shield") > -1) {
+                            tags.push("Small Shield");
+                        } else if (itemData[1].indexOf("Tower Shield") > -1) {
+                            if (itemData[1].indexOf("Great Tower Shield") > -1) tags.push("Great Tower Shield");
+                            else tags.push("Tower Shield");
+                        } else {
+                            tags.push("Shield");
+                        }
+                    }
+                    offhandLoop:
+                        for (const offhands in offhandData.unique) {
+                            if (offhandData.unique.hasOwnProperty(offhands)) {
+                                for (const offhand of offhandData.unique[offhands]) {
+                                    if (itemData[1].indexOf(offhand) > -1) {
+                                        tags.push(offhands);
+                                        break offhandLoop;
+                                    }
+                                }
+                            }
+                        }
+                }
 
                 for (const pot of potions) {
                     index = itemData[1].indexOf(pot);
@@ -161,25 +170,46 @@ bot.on("message", m => {
                     }
                 }
 
-                if (itemData[1].indexOf("Sroll") > -1 || itemData[1].indexOf("Scroll") > -1) {
-                    for (const scroll of scrolls) {
-                        index = itemData[1].indexOf(scroll);
-                        if (index > -1) {
-                            tags.push(scroll);
-                            break;
+                if (tags.indexOf("Offhand") === -1) {
+                    if (itemData[0] === "Consumable") {
+                        tags.push("Consumable");
+
+                        for (const pot of potions) {
+                            index = itemData[1].indexOf(pot);
+                            if (index > -1) {
+                                tags.push(pot);
+                                break;
+                            }
+                        }
+
+                        if (itemData[1].indexOf("Sroll") > -1 || itemData[1].indexOf("Scroll") > -1) {
+                            for (const scroll of scrolls) {
+                                index = itemData[1].indexOf(scroll);
+                                if (index > -1) {
+                                    tags.push(scroll);
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            armourLoop:
-            for (const armourType in data) {
-                if (data.hasOwnProperty(armourType)) {
-                    for (const armour of data[armourType]) {
-                        if (itemData[1].indexOf(armour) > -1) {
-                            tags.push(armourType);
-                            break armourLoop;
-                        }
+                    if (tags.indexOf("Consumable") === -1) {
+                        armourLoop:
+                            for (const armourType in armourData) {
+                                if (armourData.hasOwnProperty(armourType)) {
+                                    for (const armour of armourData[armourType]) {
+                                        if (itemData[1].indexOf(armour) > -1) {
+                                            tags.push("Armour");
+                                            tags.push(armourType);
+                                            break armourLoop;
+                                        }
+                                    }
+                                }
+                            }
+
+                        index = armourParts.indexOf(itemData[0]);
+
+                        if (index > -1) tags.push(armourParts[index]);
                     }
                 }
             }
@@ -200,28 +230,28 @@ bot.on("message", m => {
             }
 
             for (const conWeapon of config.weapons) {
-                if (tags.indexOf(conWeapon) > -1) {
+                if (tags.indexOf(conWeapon) > -1 && tags.indexOf("Weapon")) {
                     weapon = true;
                     break;
                 }
             }
 
-            for (const conOffhand of config.weapons) {
-                if (tags.indexOf(conOffhand) > -1) {
+            for (const conOffhand of config.offhands) {
+                if (tags.indexOf(conOffhand) > -1 && tags.indexOf("Offhand")) {
                     offhand = true;
                     break;
                 }
             }
 
             for (const conPotion of config.potions) {
-                if (tags.indexOf(conPotion) > -1) {
+                if (tags.indexOf(conPotion) > -1 && tags.indexOf("Consumable")) {
                     potion = true;
                     break;
                 }
             }
 
             for (const conScroll of config.scrolls) {
-                if (tags.indexOf(conScroll) > -1) {
+                if (tags.indexOf(conScroll) > -1 && tags.indexOf("Consumable")) {
                     scroll = true;
                     break;
                 }
@@ -229,14 +259,14 @@ bot.on("message", m => {
 
             if (!weapon && !potion && !scroll && !offhand) {
                 for (const conArmPart of config.armourParts) {
-                    if (tags.indexOf(conArmPart) > -1) {
+                    if (tags.indexOf(conArmPart) > -1 && tags.indexOf("Armour")) {
                         armourPart = true;
                         break;
                     }
                 }
 
                 for (const conArmour of config.armour) {
-                    if (tags.indexOf(conArmour) > -1) {
+                    if (tags.indexOf(conArmour) > -1 && tags.indexOf("Armour")) {
                         armour = true;
                         break;
                     }
