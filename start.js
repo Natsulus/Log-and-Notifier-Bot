@@ -162,11 +162,13 @@ bot.on("message", m => {
                         }
                 }
 
-                for (const pot of potions) {
-                    index = itemData[1].indexOf(pot);
-                    if (index > -1) {
-                        tags.push(pot);
-                        break;
+                if (itemData[1].indexOf("Potion")) {
+                    for (const pot of potions) {
+                        index = itemData[1].indexOf(pot);
+                        if (index > -1) {
+                            tags.push(pot);
+                            break;
+                        }
                     }
                 }
 
@@ -174,11 +176,13 @@ bot.on("message", m => {
                     if (itemData[0] === "Consumable") {
                         tags.push("Consumable");
 
-                        for (const pot of potions) {
-                            index = itemData[1].indexOf(pot);
-                            if (index > -1) {
-                                tags.push(pot);
-                                break;
+                        if (itemData[1].indexOf("Potion")) {
+                            for (const pot of potions) {
+                                index = itemData[1].indexOf(pot);
+                                if (index > -1) {
+                                    tags.push(pot);
+                                    break;
+                                }
                             }
                         }
 
