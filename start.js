@@ -67,6 +67,9 @@ bot.on("message", m => {
                     } else if (messages[i].indexOf("embarked on the quest") !== -1) {
                         if (config.consoleLog) sConsole.embark(messages[i].split('**').join(''));
                         if (config.pmLog) bot.sendMessage(user, messages[i]);
+                    } else if (checkVictoryDefeat(messages[i])) {
+                        if (config.consoleLog) sConsole.defeat(messages[i].split('**').join(''));
+                        if (config.pmLog) bot.sendMessage(user, messages[i]);
                     } else if (messages[i].indexOf("Gold!]") !== -1) {
                         if (config.consoleLog) sConsole.victory(messages[i].split('**').join(''));
                         if (config.pmLog) bot.sendMessage(user, messages[i]);
@@ -293,3 +296,11 @@ if (config.botEmail !== "" && config.botPassword !== "") bot.login(config.botEma
 else bot.login(defBot.defBotEmail, defBot.defBotPassword).catch(e => console.log(e));
 
 app.listen(app.get("port"));
+
+function checkVictoryDefeat(message) {
+    if (message.indexOf(`pummeled ${config.name} to death!`) > -1) return true;
+    if (message.indexOf(`exterminated ${config.name}!`) > -1) return true;
+    if (message.indexOf(`${config.name} was butchered by`) > -1) return true;
+    if (message.indexOf(`${config.name} was no match for`) > -1) return true;
+    return message.startsWith(`${config.name} and`);
+}
