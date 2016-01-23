@@ -5,7 +5,6 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 ## Requires
 - [Node.js](https://nodejs.org/en/) (>v5.0.0)
 - Python v2.7 (Not >v3.0)
-- May possibly require: C++ Compiler, you should have it if you have Visual Studio installed
 
 ## Installation
 
@@ -35,6 +34,7 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 
 ## Notes (READ THIS)
 
+- **You will probably get 2 errors involving bufferutil and utf-8-validate when you run `npm install` if you don't have Visual Studio with C++ Components, HOWEVER, you can ignore these errors as they do not affect how the program is run.**
 - **You can use the same email and password for the account that matches the discordId, however PMs will not work if you do so.**
 - If you want PMs but are too lazy to set up your own bot account, leave the botEmail and botPassword as "" to use my bot account instead.
 - The website will be available at `localhost:5000`, unless you change the port of course.
@@ -42,5 +42,6 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 - To filter by tags on the website, enclose your search tag in []. `e.g. [+B][Sword]`
 - You will need to restart the bot when updating configurations.
 - To use console only, just remove any `express` related code.
-- Colouring in console can be changed, just change the related code to so. See [here](https://github.com/bluejamesbond/Scribe.js/wiki/4-%C2%B7-API-%3A-Console2) for more info on how to change console colours.
-- Bot will auto-join the BDA server if not connected.
+- Colouring in console can be changed, just change the related code to do so. See [here](https://github.com/bluejamesbond/Scribe.js/wiki/4-%C2%B7-API-%3A-Console2) for more info on how to change console colours.
+- Colouring of website can also be changed, but you will need CSS knowledge. Just edit and add additional CSS to the *style.css* file at `DIRECTORY/node_modules/scribe-js/static`
+- Bot will auto-join the BDA server if not connected and will auto join IdleRPG if not already.
