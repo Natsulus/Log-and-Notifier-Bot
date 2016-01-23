@@ -52,6 +52,15 @@ let user = false;
 bot.on("ready", () => {
     user = bot.users.get("id", config.discordId);
     if (!bot.servers.get("id", "86004744966914048")) bot.joinServer("https://discord.gg/0Tmfo5ZbORC20hEs");
+    let roles = bot.servers.get("id", "86004744966914048").rolesOfUser(user);
+    let idler = false;
+    for (const role of roles) {
+        if (role.name === "idler") {
+            idler = true;
+            break;
+        }
+    }
+    if (!idler) bot.sendMessage(bot.channels.get("id", "134811337246244864"), "!idle");
 });
 
 bot.on("message", m => {
