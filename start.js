@@ -80,7 +80,7 @@ bot.on("message", m => {
                         } else if (messages[i].indexOf(`${config.name}[`) !== -1) {
                             if (config.consoleLog) sConsole.victory(messages[i].split('**').join(''));
                             if (config.pmLog) bot.sendMessage(user, messages[i]);
-                        } else if (messages[i] === `@${user.username} `) {
+                        } else if (messages[i].indexOf(`@${user.username} `) !== -1) {
                             break;
                         } else {
                             if (config.consoleLog) sConsole.defeat(messages[i].split('**').join(''));
