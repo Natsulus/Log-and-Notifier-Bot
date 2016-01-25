@@ -27,7 +27,7 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 - armour: List of Armour Types you want to be notified for from the shop. [Array of String]
 - potions: List of Potions you want to be notified for from the shop. (Ignores Rank Config) [Array of String]
 - scrolls: List of Scrolls you want to be notifier for from the shop. (Ignores Rank Config) [Array of String]
-- shopLevel: Select which shop to check (Lvl <100, Lvl 100, or both). Use `below`, `above`, or `all`. [String]
+- shopLevel: Select which shop to check and log (Lvl <100, Lvl 100, or both). Use `below`, `above`, or `all`. [String]
 - pmLog: If true, the bot will PM you your activities (Chest, Quest, etc). [Boolean]
 - pmItems: If true, the bot will PM items in the shop that match the configured criteria. [Boolean]
 - consoleLog: If true, the bot will log activities, shop, and wanted items on console and website. [Boolean]
@@ -44,4 +44,4 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 - To use console only, just remove any `express` related code.
 - Colouring in console can be changed, just change the related code to do so. See [here](https://github.com/bluejamesbond/Scribe.js/wiki/4-%C2%B7-API-%3A-Console2) for more info on how to change console colours.
 - Colouring of website can also be changed, but you will need CSS knowledge. Just edit and add additional CSS to the *style.css* file at `DIRECTORY/node_modules/scribe-js/static`
-- Bot will auto-join the BDA server if not connected and will auto join IdleRPG if not already.
+- Bot will auto-join the IdleRPG server if not connected.
