@@ -51,21 +51,12 @@ let user = false;
 
 bot.on("ready", () => {
     user = bot.users.get("id", config.discordId);
-    if (!bot.servers.get("id", "86004744966914048")) bot.joinServer("https://discord.gg/0Tmfo5ZbORC20hEs");
-    let roles = bot.servers.get("id", "86004744966914048").rolesOfUser(user);
-    let idler = false;
-    for (const role of roles) {
-        if (role.name === "idler") {
-            idler = true;
-            break;
-        }
-    }
-    if (!idler) bot.sendMessage(bot.channels.get("id", "134811337246244864"), "!idle");
+    if (!bot.servers.get("id", "140849390079180800")) bot.joinServer("https://discord.gg/0mmHjdSpb1IShqJE");
 });
 
 bot.on("message", m => {
-    if (m.author.id === "134653002337222657") {
-        if (m.channel.id === '134811337246244864') {
+    if (m.author.id === "140879741765812224") {
+        if (m.channel.id === '140854986551590912') {
             if (m.content.indexOf(config.name) !== -1) {
                 const messages = m.content.split("\n");
 
@@ -90,40 +81,14 @@ bot.on("message", m => {
                     }
                 }
             }
-        } else if (m.channel.id === '135579492616765440') {
+        } else if (m.channel.id === '140853028960862208' || m.channel.id === '140853076994031616') {
+            if (m.channel.id === '140853028960862208' && config.shopLevel.toLowerCase() === 'below') return;
+            if (m.channel.id === '140853076994031616' && config.shopLevel.toLowerCase() === 'above') return;
             let shop = m.content;
 
-            if (config.shopLevel.toLowerCase() === "above") {
-                shop = shop.split("\n=")[0];
-                shop = shop.split("\n");
-                shop.shift();
-                shop.pop();
-            } else if (config.shopLevel.toLowerCase() === "below") {
-                shop = shop.split("\n=")[1];
-                shop = shop.split("\n");
-                shop.shift();
-                shop.pop();
-            } else {
-                shop = shop.split("\n");
-                shop.pop();
-
-                for (let i = 0; i < shop.length; i++) {
-                    if (shop[i].indexOf("!hgamble") !== -1) {
-                        shop.splice(i, 1);
-                        break;
-                    }
-                }
-            }
-            if (config.consoleLog) sConsole.shop("==========Separator==========");
-
-            for (let i = 0; i < shop.length; i++) {
-                if (shop[i].includes("====")) {
-                    shop.splice(i, 1);
-                    i--;
-                }
-            }
-            shop = shop.join("\n");
-            shop = shop.split("```").join("").split("\n");
+            shop = shop.split("\n");
+            shop.pop();
+            shop = shop.join("\n").split("```").join("").split("\n");
             let message = [];
 
             for (let i = 0; i < shop.length; i++) {
