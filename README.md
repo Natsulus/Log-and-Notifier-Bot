@@ -35,7 +35,8 @@ A Discord Bot that logs your IdleRPG Activity and notifies you on items in the s
 ## Notes (READ THIS)
 
 - **You will probably get 2 errors involving bufferutil and utf-8-validate when you run `npm install` if you don't have Visual Studio with C++ Components, HOWEVER, you can ignore these errors as they do not affect how the program is run.**
-- **You can use the same email and password for the account that matches the discordId, however PMs will not work if you do so.**
+- This will not correctly log Defeats and Victories if you are under level 100 as the formatting is different and I'm too lazy to fix it so it takes the different formatting into account.
+- You can use the same email and password for the account that matches the discordId, however PMs will not work if you do so.
 - If you want PMs but are too lazy to set up your own bot account, leave the botEmail and botPassword as "" to use my bot account instead.
 - The website will be available at `localhost:5000`, unless you change the port of course.
 - **There are 3 log files (Activity, Shop, Wanted). At the top left of the website, there's a menu button which lets you select which log files to show. You'll likely be looking to have Activity selected. The website selects the first log file created by default so it will either show the Shop or Activity log file.**
