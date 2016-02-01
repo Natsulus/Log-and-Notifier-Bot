@@ -6,5 +6,8 @@
         "discord.js": "latest",
         "express": "latest",
         "scribe-js": "latest"
+    },
+    "engines": {
+    	"node": ">=5.0.0"
     }
 }
